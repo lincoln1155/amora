@@ -1,0 +1,43 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Python
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.ruff_cache
+**/.mypy_cache
+backend/venv
+backend/.venv
+
+# Banco local (não vai pra imagem; em prod usa volume)
+**/*.db
+**/*.db-journal
+**/*.sqlite*
+
+# Node
+frontend/node_modules
+frontend/dist
+frontend/dist-ssr
+
+# Env (segredos vão via fly secrets, nunca via imagem)
+**/.env
+**/.env.local
+
+# WSL/OS junk
+**/*Zone.Identifier
+**/.DS_Store
+**/Thumbs.db
+
+# Docs e configs do dev
+.claude
+TODO.md
+README.md
+readme.md
+*.md
+
+# Editor
+.vscode
+.idea

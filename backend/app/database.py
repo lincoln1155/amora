@@ -1,7 +1,6 @@
 from sqlmodel import SQLModel, create_engine, Session
+from app.config import DATABASE_URL
 from app.models import Settings
-
-DATABASE_URL = "sqlite:///./amora.db"
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 

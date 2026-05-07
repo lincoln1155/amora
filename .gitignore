@@ -157,6 +157,22 @@ ENV/
 env.bak/
 venv.bak/
 
+# SQLite databases (dados locais — não commitar)
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# WSL/Windows artifacts (Alternate Data Streams aparecem como arquivos no WSL)
+*Zone.Identifier
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Claude Code (estado local da sessão por projeto)
+.claude/
+
 # Spyder project settings
 .spyderproject
 .spyproject

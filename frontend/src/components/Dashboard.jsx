@@ -1,14 +1,16 @@
 import { useState, useEffect, useCallback } from 'react'
 import BottomNav from './BottomNav'
 import Home from '../pages/Home'
-import Events from '../pages/Events'
+import Habits from '../pages/Habits'
 import Calendar from '../pages/Calendar'
+import Notes from '../pages/Notes'
 import Settings from '../pages/Settings'
 
 const PAGES = {
   home: Home,
-  events: Events,
+  habits: Habits,
   calendar: Calendar,
+  notes: Notes,
   settings: Settings,
 }
 

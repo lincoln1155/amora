@@ -1,7 +1,8 @@
 const PAGES = [
   { id: 'home',     label: 'início',     emoji: '🏠' },
-  { id: 'events',   label: 'eventos',    emoji: '📋' },
+  { id: 'habits',   label: 'hábitos',    emoji: '🌱' },
   { id: 'calendar', label: 'calendário', emoji: '📅' },
+  { id: 'notes',    label: 'notas',      emoji: '📝' },
   { id: 'settings', label: 'ajustes',    emoji: '⚙️' },
 ]
 

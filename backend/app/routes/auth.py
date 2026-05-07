@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Response, Cookie
 from pydantic import BaseModel
 import hashlib
 import secrets
-from app.config import APP_PASSWORD, SECRET_KEY
+from app.config import APP_PASSWORD, SECRET_KEY, IS_PRODUCTION
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -35,6 +35,7 @@ def login(body: LoginRequest, response: Response):
         value=token,
         httponly=True,
         samesite="lax",
+        secure=IS_PRODUCTION,
         max_age=60 * 60 * 24 * 30,  # 30 dias
     )
     return {"ok": True}
