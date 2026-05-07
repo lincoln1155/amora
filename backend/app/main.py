@@ -1,0 +1,29 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from app.database import create_db
+from app.routes import auth, events, weather, settings
+
+app = FastAPI(title="Amora")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # Vite dev server
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(auth.router)
+app.include_router(events.router)
+app.include_router(weather.router)
+app.include_router(settings.router)
+
+
+@app.on_event("startup")
+def on_startup():
+    create_db()
+
+
+@app.get("/")
+def root():
+    return {"status": "ok"}
