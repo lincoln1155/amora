@@ -1,6 +1,5 @@
 from fastapi import APIRouter, HTTPException, Response, Cookie
 from pydantic import BaseModel
-import hashlib
 import secrets
 from app.config import APP_PASSWORD, SECRET_KEY, IS_PRODUCTION
 
@@ -8,10 +7,6 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 # Token simples em memória (reinicia com o servidor — aceitável para uso pessoal)
 _valid_tokens: set[str] = set()
-
-
-def _hash_password(password: str) -> str:
-    return hashlib.sha256(password.encode()).hexdigest()
 
 
 def verify_token(token: str | None) -> bool:
@@ -24,7 +19,9 @@ class LoginRequest(BaseModel):
 
 @router.post("/login")
 def login(body: LoginRequest, response: Response):
-    if body.password != APP_PASSWORD:
+    # compare_digest é timing-safe: o tempo de comparação não vaza informação
+    # sobre a senha correta. Detalhe defensivo barato mesmo em app single-user.
+    if not secrets.compare_digest(body.password, APP_PASSWORD):
         raise HTTPException(status_code=401, detail="Senha incorreta")
 
     token = secrets.token_hex(32)

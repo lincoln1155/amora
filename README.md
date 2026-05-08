@@ -58,7 +58,7 @@ Static assets are mounted at `/` only when the `static/` directory exists (produ
 | **Backend** | Python 3.12, FastAPI, SQLModel, Uvicorn | JSON API under `/api/*`, static frontend mount at `/` |
 | **Database** | SQLite via SQLAlchemy / SQLModel | Persisted on Railway volume at `/data` |
 | **External APIs** | OpenWeatherMap (`httpx` async client) | Current weather with metric units and pt-BR locale |
-| **Auth** | Cookie session (httpOnly, SameSite=Lax, Secure conditional) | In-memory token store, sha256 password hash |
+| **Auth** | Cookie session (httpOnly, SameSite=Lax, Secure conditional) | In-memory token store, env-var password with timing-safe comparison |
 | **DevOps** | Multi-stage Docker, Railway, healthcheck via `railway.json` | Single-service monolithic deploy with persistent volume |
 
 ## Project Structure
@@ -165,7 +165,7 @@ The static directory mount only happens if the `static/` folder exists. In local
 This is a **single-user personal app**, not a multi-tenant SaaS. Specific intentional tradeoffs:
 
 - **In-memory token store** (`set[str]` in `auth.py`). All sessions invalidate on server restart. Acceptable for one user; would need Redis or DB-backed tokens for multi-tenant.
-- **sha256 password hash** instead of bcrypt/argon2. Acceptable for a single shared password against a known threat model; should be upgraded if multi-user is added.
+- **Password lives in an env var** (`APP_PASSWORD`), compared via `secrets.compare_digest` for timing safety. There is no password hash store — the app never persists credentials. For multi-user this would need per-user accounts and a proper hashing scheme (bcrypt/argon2).
 - **No CSRF token** — relies on `SameSite=Lax` for CSRF mitigation, which is sufficient for the current scope but not for a public multi-user app.
 
 These are documented intentional choices, not unaddressed bugs.
